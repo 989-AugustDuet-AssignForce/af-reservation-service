@@ -1,4 +1,4 @@
-package com.revature;
+package com.revature.service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,9 +10,11 @@ class ReservationServiceApplicationTests {
 	Reservation testRes;
 	
 	@Test
-	void isValidReservation(Reservation r, Location rmId) {
+    void isValidReservation(Reservation r, Location rmId) {
 		//check to see if room is available for a  
 		//reservation during proposed time slot
+
+	
 	}
 	
 	@Test
