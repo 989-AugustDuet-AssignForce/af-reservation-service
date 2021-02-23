@@ -9,3 +9,4 @@ reservation-service/target/classes/META-INF/maven/com.revature/reservation-servi
 reservation-service/target/classes/application.properties
 .project
 /.metadata/
+.project

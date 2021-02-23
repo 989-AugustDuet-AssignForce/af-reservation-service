@@ -1,6 +1,6 @@
 package com.revature.model;
 
-public class Revservation {
+public class Reservation {
 	
 	private int batchId;
 	private int buildingId;
@@ -14,11 +14,11 @@ public class Revservation {
 	
 	//TODO: Start Time / end Time with the Lux API
 	
-	public Revservation() {
+	public Reservation() {
 		
 	}
 	
-	public Revservation( int batchId, 
+	public Reservation( int batchId, 
 						int buildingId, 
 						int locationId, 
 						int reservationId, 
