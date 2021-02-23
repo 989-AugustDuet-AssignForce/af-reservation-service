@@ -6,3 +6,4 @@ reservation-service/.project
 *.MF
 reservation-service/target/classes/META-INF/maven/com.revature/reservation-service/pom.properties
 reservation-service/target/classes/application.properties
+.project
