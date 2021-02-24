@@ -1,5 +1,9 @@
 package com.revature.model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Reservation {
 
 	private Integer reservationId;
@@ -9,28 +13,40 @@ public class Reservation {
 	private Integer roomId;
 	private RoomType roomType;
 	private String reserver;
+	private Date startDate;
+	private Date endDate;
+
+
 	
-	//TODO: Start Time / end Time with the Lux API
-	//TODO: Start Date/ end Date
+	//set date/time format
+	private final SimpleDateFormat DATEFORMAT = new SimpleDateFormat("MM-DD-YYYY HH:MM");
+
 
 	public Reservation() {
-		
+
 	}
-	
-	public Reservation( Integer batchId,
-						Integer buildingId,
-						Integer locationId,
-						Integer reservationId,
-						Integer roomId,
-						RoomType roomType, 
-						String reserver ) {
+
+	public Reservation(Integer reservationId, Integer batchId, Integer buildingId, 
+			Integer locationId, Integer roomId, RoomType roomType, String reserver, String startDate,
+			String endDate,	SimpleDateFormat dateFormat) {
+		super();
+		this.reservationId = reservationId;
 		this.batchId = batchId;
 		this.buildingId = buildingId;
 		this.locationId = locationId;
-		this.reservationId = reservationId;
 		this.roomId = roomId;
 		this.roomType = roomType;
 		this.reserver = reserver;
+		DATEFORMAT.format(this.startDate); 
+		try {
+			this.startDate = DATEFORMAT.parse( startDate );
+			this.endDate = DATEFORMAT.parse( endDate );
+		} catch ( ParseException e ) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
 	}
 
 	public Integer getReservationId() {
@@ -88,4 +104,48 @@ public class Reservation {
 	public void setReserver(String reserver) {
 		this.reserver = reserver;
 	}
+
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(String startDate) {
+		try {
+		this.startDate = DATEFORMAT.parse(startDate);
+		} 
+		catch ( ParseException e ) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(String endDate) {
+
+		try {
+			this.endDate = DATEFORMAT.parse( endDate );
+		} catch ( ParseException e ) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	//	public Date getStartTime() {
+	//		return startTime;
+	//	}
+	//
+	//	public void setStartTime(Time startTime) {
+	//		this.startTime = startTime;
+	//	}
+	//
+	//	public Time getEndTime() {
+	//		return endTime;
+	//	}
+	//
+	//	public void setEndTime(Time endTime) {
+	//		this.endTime = endTime;
+	//	}
 }
