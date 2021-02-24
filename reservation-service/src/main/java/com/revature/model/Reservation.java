@@ -1,31 +1,29 @@
 package com.revature.model;
 
 public class Reservation {
-	
-	private int batchId;
-	private int buildingId;
-	private int locationId;
-	private int reservationId;
-	private int roomId;
-	
+
+	private Integer reservationId;
+	private Integer batchId;
+	private Integer buildingId;
+	private Integer locationId;
+	private Integer roomId;
 	private RoomType roomType;
-	
 	private String reserver;
 	
 	//TODO: Start Time / end Time with the Lux API
-	
+	//TODO: Start Date/ end Date
+
 	public Reservation() {
 		
 	}
 	
-	public Reservation( int batchId, 
-						int buildingId, 
-						int locationId, 
-						int reservationId, 
-						int roomId, 
+	public Reservation( Integer batchId,
+						Integer buildingId,
+						Integer locationId,
+						Integer reservationId,
+						Integer roomId,
 						RoomType roomType, 
 						String reserver ) {
-		
 		this.batchId = batchId;
 		this.buildingId = buildingId;
 		this.locationId = locationId;
@@ -35,43 +33,43 @@ public class Reservation {
 		this.reserver = reserver;
 	}
 
-	public int getBatchId() {
-		return batchId;
-	}
-
-	public void setBatchId(int batchId) {
-		this.batchId = batchId;
-	}
-
-	public int getBuildingId() {
-		return buildingId;
-	}
-
-	public void setBuildingId(int buildingId) {
-		this.buildingId = buildingId;
-	}
-
-	public int getLocationId() {
-		return locationId;
-	}
-
-	public void setLocationId(int locationId) {
-		this.locationId = locationId;
-	}
-
-	public int getReservationId() {
+	public Integer getReservationId() {
 		return reservationId;
 	}
 
-	public void setReservationId(int reservationId) {
+	public void setReservationId(Integer reservationId) {
 		this.reservationId = reservationId;
 	}
 
-	public int getRoomId() {
+	public Integer getBatchId() {
+		return batchId;
+	}
+
+	public void setBatchId(Integer batchId) {
+		this.batchId = batchId;
+	}
+
+	public Integer getBuildingId() {
+		return buildingId;
+	}
+
+	public void setBuildingId(Integer buildingId) {
+		this.buildingId = buildingId;
+	}
+
+	public Integer getLocationId() {
+		return locationId;
+	}
+
+	public void setLocationId(Integer locationId) {
+		this.locationId = locationId;
+	}
+
+	public Integer getRoomId() {
 		return roomId;
 	}
 
-	public void setRoomId(int roomId) {
+	public void setRoomId(Integer roomId) {
 		this.roomId = roomId;
 	}
 
@@ -90,5 +88,4 @@ public class Reservation {
 	public void setReserver(String reserver) {
 		this.reserver = reserver;
 	}
-	
 }
