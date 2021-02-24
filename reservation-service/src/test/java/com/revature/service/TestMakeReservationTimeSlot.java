@@ -30,7 +30,7 @@ public class TestMakeReservationTimeSlot {
 
 	//what should be used to interact with the reservation repository
 	@Autowired
-	ReservationController reserveControl; //reservation controller 
+	ReservationServiceImpl reserveControl; //reservation controller 
 
 	@Before
 	void createNewTestReservation() {
@@ -42,7 +42,7 @@ public class TestMakeReservationTimeSlot {
 	@BeforeClass
 	void createResList() {
 		//populate the list with the controller
-		testResList = reserveControl.getAllReservations();
+		testResList = (ArrayList<Reservation>) reserveControl.getAllReservations();
 	}
 
 	@Test
@@ -108,7 +108,7 @@ public class TestMakeReservationTimeSlot {
 		reserveControl.isValidReservation( reservation.getRoomId(), reservation.getReservationId() )
 		
 		//add the reservation
-		reserveControl.add(	reservation	);
+		reserveControl.addReservation(	reservation	);
 		
 		//repopulate list with current list from  database
 		createResList();
