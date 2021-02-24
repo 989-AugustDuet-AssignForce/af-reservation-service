@@ -28,7 +28,7 @@ public class Reservation {
 
 	public Reservation(Integer reservationId, Integer batchId, Integer buildingId, 
 			Integer locationId, Integer roomId, RoomType roomType, String reserver, String startDate,
-			String endDate,	SimpleDateFormat dateFormat) {
+			String endDate) {
 		super();
 		this.reservationId = reservationId;
 		this.batchId = batchId;
