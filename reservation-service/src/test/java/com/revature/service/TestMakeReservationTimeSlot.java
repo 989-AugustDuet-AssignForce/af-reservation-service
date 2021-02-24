@@ -2,49 +2,77 @@ package com.revature.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
 
+import org.junit.BeforeClass;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.revature.model.Reservation;
 
+
 @SpringBootTest
 public class TestMakeReservationTimeSlot {
 
 	@Autowired
-	Reservation testRes;
+	ArrayList<Reservation> testResList; //invalid reservation that doesn't exist
 		
 	
+//	unneeded? commented out
+//	@Autowired
+//	RserevationRepository resRepo; //repository of reservations 
+	
+	//what should be used to interact with the reservation repository
+	@Autowired
+	ReservationController resCtrl; //reservation controller 
+	
+	@BeforeClass
+	void createResList() {
+		testResList = resCtrl.getAllReservations();
+	}
 	
 	@Test
-    void isValidReservation(Reservation r) {
-		//check to see if room is available for a  
-		//reservation during proposed time slot
-		
-		//make sure that room and reservations location id's all match 
-		AssertTrue(r.getBuildingId() == testRes.getBuildingId() 
-				&& r.getRoomId() == testRes.getRoomId() 
-				&& r.getLocationId() == testRes.getLocationId());
-		//		now assert that the room is available from start to stop times need lux api call??
-		//		AssertTrue(testRes.isAvailable(r.))
+    public void reservationIsListed(Reservation r) {
+		//check to see if reservation is present in the repo  
+		assertTrue(testResList.contains(r));
+	
+	}
+	
+	@Test
+	public void duplicateReservation(Reservation dupeRes) {
+		assertTrue(testResList.contains(dupeRes));
 	}
 	
 	
+	
 	@Test
-	void isInvalidReservation(Reservation r) {
+	public void addReservationToRepository(Reservation r) {
+		//first affirm that the reservation does not exist in the repo
+		assertFalse(testResList.contains(r));
+		//add the reservation to the repo
+		resCtrl.addReservation(r);
+		//recreate Reservation List and confirm it is now listed
+		createResList();
+		assertTrue(testResList.contains(r));
+	}
+	
+	
+	
+	@Test
+	void reservationIsNotListed(Reservation r) {
 		//make sure it is a bad match
-		AssertFalse(r.getBuildingId() == testRes.getBuildingId() 
-		&& r.getRoomId() == testRes.getRoomId() 
-		&& r.getLocationId() == testRes.getLocationId());
-//		now assert that the room is not available from start to stop times need lux api call??
-//		AssertFalse(testRes.isAvailable(r.))
+		assertFalse(testResList.contains(r));
+		
 	}
 	
 	
 	@Test
 	void makeReservation(Reservation r) {
 		//see if making a reservation was successful
+		reservationIsNotListed(r);
+		addReservationToRepository(r);
+		
 	}
 	
 	@Test
