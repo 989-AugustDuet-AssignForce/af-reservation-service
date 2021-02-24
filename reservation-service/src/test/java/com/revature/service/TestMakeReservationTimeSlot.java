@@ -30,7 +30,7 @@ public class TestMakeReservationTimeSlot {
 
 	//what should be used to interact with the reservation repository
 	@Autowired
-	ReservationServiceImpl reserveControl; //reservation controller 
+	ReservationService reserveControl; //reservation controller 
 
 	@Before
 	void createNewTestReservation() {
