@@ -13,4 +13,5 @@ public interface ReservationService {
     Reservation updateReservation(Integer reservationId, Reservation reservation);
     void deleteReservation(Integer reservationId);
     void assignBatch(Integer batchId);
+	boolean isValidReservation(Reservation reservation);
 }
