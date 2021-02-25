@@ -94,7 +94,7 @@ public class TestMakeReservationTimeSlot {
 		//if the reservation is already in the list of reservations 
 		//reserveControl.isValidReservation( roomId, startDate, endDat ) should return false
 		//as the reservation already exists, the reservation is invalid
-		Assert.assertTrue( reserveControl.isValidReservationTime( reservation.getRoomId(), 
+		assertTrue( reserveControl.isValidReservationTime( reservation.getRoomId(), 
 				reservation.getStartDate(), reservation.getEndDate() ) );
 
 
@@ -140,16 +140,22 @@ public class TestMakeReservationTimeSlot {
 		
 
 		//	are the dates valid?
-		reserveControl.isValidReservation( reservation.getRoomId(), reservation.getReservationId() );
+		if( reserveControl.isValidReservationTime( reservation.getRoomId(), reservation.getStartDate(), 
+				reservation.getEndDate() ) {
 
-		//	add the reservation
-		reserveControl.addReservation(	reservation	);
+			//	add the reservation
+			reserveControl.addReservation(	reservation	);
 
-		//	repopulate list with current list from  database
-		repopulateTestList();
-		//	is the reservation in the most recent list?
-		assertTrue( testResList.contains( reservation ) );
+			//	repopulate list with current list from  database
+			repopulateTestList();
 
+
+			//	is the reservation in the most recent list?
+			assertTrue( testResList.contains( reservation ) );
+
+		} else {
+			fail("unable too make Reservation ");
+		}
 	}
 
 	@Test
