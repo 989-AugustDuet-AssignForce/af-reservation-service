@@ -22,7 +22,7 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public Reservation updateReservation(Integer reservationId, Reservation reservation) {
+    public Reservation updateReservation(Reservation reservation) {
         return null;
     }
 
@@ -42,12 +42,12 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public void assignBatch(Integer batchId) {
+    public void assignBatch(Integer reservationId, Integer batchId) {
 
     }
 
     @Override
-    public List<Reservation> getAllReservationsByRoomId(Integer buildingId, Integer roomId) {
+    public List<Reservation> getAllReservationsByRoomId(Integer roomId) {
         return null;
     }
 

@@ -30,9 +30,9 @@ public class ReservationController {
         return new ResponseEntity<List<Reservation>>(HttpStatus.OK);
     }
 
-    @GetMapping(path = "/{buildingId}/{roomId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Reservation>> getAllReservationsByRoomId(@PathVariable Integer buildingId, @PathVariable Integer roomId){
-        reservationService.getAllReservationsByRoomId(buildingId,roomId);
+    @GetMapping(path = "/rooms/{roomId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Reservation>> getAllReservationsByRoomId(@PathVariable Integer roomId){
+        reservationService.getAllReservationsByRoomId(roomId);
         return new ResponseEntity<List<Reservation>>(HttpStatus.OK);
     }
 
@@ -42,22 +42,22 @@ public class ReservationController {
         return new ResponseEntity<>(null, HttpStatus.CREATED);
     }
 
-    @PutMapping(path = "/{reservationId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Reservation> updateReservation(@RequestBody Reservation reservation, @PathVariable Integer reservationId){
-        reservationService.updateReservation(reservationId,reservation);
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Reservation> updateReservation(@RequestBody Reservation reservation){
+        reservationService.updateReservation(reservation);
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/{reservationId}")
     public ResponseEntity<Void> deleteReservation(@PathVariable Integer reservationId){
+        reservationService.deleteReservation(reservationId);
         return  new ResponseEntity<Void>(HttpStatus.OK);
     }
 
-    //pending, needs more discussion
-    public ResponseEntity<Void> assignBatch(@PathVariable Integer batchId){
-        reservationService.assignBatch(batchId);
+    @PutMapping(path="/{reservationId}/{batchId}")
+    public ResponseEntity<Void> assignBatch(@PathVariable Integer reservationId, @PathVariable Integer batchId){
+        reservationService.assignBatch(reservationId, batchId);
         return new ResponseEntity<Void>(HttpStatus.CREATED);
     }
-
 
 }
