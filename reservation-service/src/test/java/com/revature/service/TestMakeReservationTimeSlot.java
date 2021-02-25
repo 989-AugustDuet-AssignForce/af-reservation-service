@@ -9,6 +9,7 @@ import org.junit.BeforeClass;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.util.Assert;
 
 import com.revature.model.Reservation;
 import com.revature.model.RoomType;
@@ -61,9 +62,11 @@ public class TestMakeReservationTimeSlot {
 	
 	@Test
 	public void reservationIsListed() {
-		
+		if( !testResList.contains( reservation ) ) {
+			reserveControl.addReservation( reservation );
+		}
 		//	check to see if reservation is present in the repo  
-		assertTrue( testResList.contains( reservation ) );
+		assertTrue(reserveControl.getAllReservations().contains(reservation));
 
 	}
 
@@ -91,7 +94,7 @@ public class TestMakeReservationTimeSlot {
 		//if the reservation is already in the list of reservations 
 		//reserveControl.isValidReservation( roomId, startDate, endDat ) should return false
 		//as the reservation already exists, the reservation is invalid
-		assertTrue( reserveControl.isValidReservationTime( reservation.getRoomId(), 
+		Assert.assertTrue( reserveControl.isValidReservationTime( reservation.getRoomId(), 
 				reservation.getStartDate(), reservation.getEndDate() ) );
 
 
