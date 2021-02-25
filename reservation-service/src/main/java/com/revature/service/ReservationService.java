@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface ReservationService {
 
-    Reservation addReservation(Reservation reservation);
-    Reservation updateReservation(Reservation reservation);
-    void deleteReservation(Integer reservationId);
     List<Reservation> getAllReservations();
+    Reservation getReservationById(Integer reservationId);
+    List<Reservation> getAllReservationsByRoomId(Integer buildingId, Integer roomId);
+    Reservation addReservation(Reservation reservation);
+    Reservation updateReservation(Integer reservationId, Reservation reservation);
+    void deleteReservation(Integer reservationId);
     void assignBatch(Integer batchId);
-    List<Reservation> getAllReservationsByRoomId(Integer roomId);
-
 }

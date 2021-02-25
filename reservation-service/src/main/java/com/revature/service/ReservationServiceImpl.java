@@ -1,11 +1,18 @@
 package com.revature.service;
 
 import com.revature.model.Reservation;
-import com.revature.service.ReservationService;
-
+import com.revature.repository.ReservationRepository;
+import org.springframework.stereotype.Service;
 import java.util.List;
 
+@Service
 public class ReservationServiceImpl implements ReservationService {
+
+    private final ReservationRepository repository;
+
+    public ReservationServiceImpl(ReservationRepository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public Reservation addReservation(Reservation reservation) {
@@ -13,7 +20,7 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public Reservation updateReservation(Reservation reservation) {
+    public Reservation updateReservation(Integer reservationId, Reservation reservation) {
         return null;
     }
 
@@ -28,12 +35,18 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
+    public Reservation getReservationById(Integer reservationId) {
+        return null;
+    }
+
+    @Override
     public void assignBatch(Integer batchId) {
 
     }
 
     @Override
-    public List<Reservation> getAllReservationsByRoomId(Integer roomId) {
+    public List<Reservation> getAllReservationsByRoomId(Integer buildingId, Integer roomId) {
         return null;
     }
+
 }
