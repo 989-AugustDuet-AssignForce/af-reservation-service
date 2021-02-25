@@ -3,6 +3,8 @@ package com.revature.service;
 import com.revature.model.Reservation;
 import com.revature.repository.ReservationRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -48,5 +50,20 @@ public class ReservationServiceImpl implements ReservationService {
     public List<Reservation> getAllReservationsByRoomId(Integer buildingId, Integer roomId) {
         return null;
     }
+
+	@Override
+	public boolean isValidReservation(Reservation reservation) {
+//		TODO Complete method
+//		List<Reservation> reservations = new ArrayList<>();
+//		repository.findAllReservationsByRoomId(reservation.getRoomId()).forEach(
+//				res -> reservations.add(res));
+//		
+//		for(Reservation res : reservations) {
+//			if( reservation.getEndDate()  ) {
+//				
+//			}
+//		}
+		return false;
+	}
 
 }
