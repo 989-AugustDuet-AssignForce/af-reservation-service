@@ -6,18 +6,22 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import com.revature.controller.ReservationController;
 import com.revature.model.Reservation;
 import com.revature.model.RoomType;
+import com.revature.repository.ReservationRepository;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
+import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
 
 @SpringBootTest
+@RunWith(SpringRunner.class)
 public class TestCaliberIntegrations {
 	
 	private Reservation reservation;
@@ -25,15 +29,11 @@ public class TestCaliberIntegrations {
 	private static ReservationController reservationController;
 	
 	@MockBean
-	private static ReservationServiceImpl reservationService;
+    private ReservationRepository repository;
 	
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-		
-		reservationService = Mockito.mock(ReservationServiceImpl.class);
-		reservationController = new ReservationController( reservationService );
-	}
-
+    @InjectMocks
+    private  ReservationServiceImpl reservationService;
+	
 	@Before
 	public void setUp() throws Exception {
 		
@@ -42,6 +42,9 @@ public class TestCaliberIntegrations {
 										"JUnit Test", 
 										"02-02-2021 00:00", 
 										"02-02-2021 01:00" );
+		
+		reservationService = new ReservationServiceImpl( repository );
+		reservationController = new ReservationController( reservationService );
 	}
 
 	@Test
@@ -62,7 +65,7 @@ public class TestCaliberIntegrations {
 		reservationController.assignBatch( reservation.getReservationId(), 101);
 		assertEquals(101, valueCapture.getValue());
 		
-		assertEquals(expected, reservation, message);
+		assertEquals(message, expected, reservation);
 	}
 	
 	@Test
@@ -87,6 +90,18 @@ public class TestCaliberIntegrations {
 		reservationController.assignBatch(reservation.getReservationId(), 102);
 		assertEquals(102, valueCapture.getValue());
 		
-		assertEquals(expected, reservation, message);
+		assertEquals(message, expected, reservation);
+	}
+	
+	@Test
+	public void getTests() {
+		Reservation expected = new Reservation( 101, 1, 1, 1, 1,
+				RoomType.PHYSICAL,
+				"JUnit Test",
+				"02-02-2021 00:00",
+				"02-02-2021 01:00" );
+		
+		reservationController.assignBatch(1, 101);
+		assertEquals("Test", expected, reservation);
 	}
 }

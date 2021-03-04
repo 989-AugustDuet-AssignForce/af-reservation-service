@@ -3,17 +3,34 @@ package com.revature.service;
 import com.revature.model.Reservation;
 import com.revature.model.Room;
 import com.revature.repository.ReservationRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.revature.model.RoomType.VIRTUAL;
 
+import com.revature.dto.BatchDTO;
+
 @Service
 public class ReservationServiceImpl implements ReservationService {
 
     private final ReservationRepository repository;
-
+    
+    @Value("${revature.caliberUrl}")
+    private String caliberUrl;
+    
+    @Value("${my.value}")
+    private String myValue;
+    
+    @Autowired
+    private RestTemplate restTemplate;
+    
+    @Autowired
     public ReservationServiceImpl(ReservationRepository repository) {
 
         this.repository = repository;
@@ -46,8 +63,25 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public void assignBatch(Integer reservationId, Integer batchId) {
-
+    public void assignBatch( Integer reservationId, Integer batchId ) throws IllegalArgumentException {
+    	// Reservation reservation = repository.getReservationById( reservationId );
+    	
+    	/*
+    	if( reservation.getBatchId() != -1 ) {
+    		// throw exception
+    		return;
+    	} */
+    	
+    	// Can throw IllegalArgumentException / 500 http Status code
+    	// but pass the exception to the calling method
+		BatchDTO batchDto = restTemplate.getForObject(caliberUrl + 
+									    				"batch/" + 
+									    				batchId, 
+									    				BatchDTO.class);
+    	
+    	// if no exception was thrown then batch id was valid, add it to the reservation
+    	// reservation.setBatchId(batchId);
+    	// repository.save(reservation);
     }
 
     @Override
