@@ -25,9 +25,6 @@ public class ReservationServiceImpl implements ReservationService {
     @Value("${revature.caliberUrl}")
     private String caliberUrl;
     
-    @Value("${my.value}")
-    private String myValue;
-    
     private RestTemplate restTemplate;
     
     public ReservationServiceImpl( ReservationRepository repository ) {
