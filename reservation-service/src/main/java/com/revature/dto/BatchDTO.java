@@ -38,7 +38,8 @@ public class BatchDTO {
 	
 	@Override
 	public String toString() {
-		return "ID: " + id + " Batch Id: " + batchId + " Name: " + name + " date: " + startDate + " - " + endDate;
+		return "ID: " + id + " Batch Id: " + batchId + " Name: " + name + " date: " + startDate +
+				" - " + endDate;
 	}
 	
 	public void formatDate() {
