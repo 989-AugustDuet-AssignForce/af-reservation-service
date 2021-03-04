@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
 @Configuration
-// @ComponentScan(basePackages = {"com.revature", "com.revature.controller", "com.revature.dto", "com.revature.model", "com.revature.repository"})
 public class ReservationBeanConfiguration {
 	
 	@Bean

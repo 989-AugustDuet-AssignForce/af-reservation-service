@@ -57,6 +57,15 @@ public class Reservation {
 			e.printStackTrace();
 		}
 	}
+	
+	public Reservation(Integer reservationId, Integer buildingId, 
+			Integer locationId, Integer roomId, RoomType roomType, String reserver, String startDate,
+			String endDate) {
+		
+		this( reservationId, null, buildingId, locationId, roomId, roomType, reserver, 
+				startDate, endDate );
+		
+	}
 
 	public Integer getReservationId() {
 		return reservationId;
@@ -140,5 +149,51 @@ public class Reservation {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	@Override
+	public boolean equals(Object object) {
+		if( !( object instanceof Reservation ) ) {
+			return false;
+		}
+		
+		Reservation compare = (Reservation) object;
+		
+		if( this.reservationId != compare.getReservationId() ) {
+			return false;
+		}
+		
+		if( this.batchId != compare.getBatchId() ) {
+			return false;
+		}
+		
+		if( this.buildingId != compare.getBuildingId() ) {
+			return false;
+		}
+		
+		if( this.locationId != compare.getLocationId() ) {
+			return false;
+		}
+		
+		if( this.roomId != compare.getRoomId() ) {
+			return false;
+		}
+		
+		if( this.roomType != compare.getRoomType() ) {
+			return false;
+		}
+		
+		if( !this.reserver.equals( compare.getReserver() )) {
+			return false;
+		}
+		
+		return true;
+	}
+	
+	@Override
+	public String toString() {
+		return "ReservationID: " + reservationId + " BatchID: " + batchId + " BuildingID: " + 
+					buildingId + " LocationID: " + locationId + " roomId: " + roomId +
+					" RoomType: " + roomType + " Reserver: " + reserver;
 	}
 }
