@@ -30,7 +30,6 @@ public class TestMakeReservationTimeSlot {
 	private ArrayList<Reservation> testResList; 
 
 	//	need a reservation object
-	@Autowired
 	private Reservation reservation;
 
 	//	autowired and injected service for testing
@@ -65,7 +64,30 @@ public class TestMakeReservationTimeSlot {
 	}
 	
 	public void repopulateTestList() {
-		testResList = (ArrayList<Reservation>) reserveServe.getAllReservations();
+		
+		testResList = new ArrayList<Reservation>();
+		reservation = new Reservation(1010011, 13, 7, 007, 1402, RoomType.PHYSICAL,
+				"BobTheBuilder", "11-22-1999 14:30", "11-22-1999 15:30" );
+		testResList.add(reservation);
+		incrementReservation();
+		testResList.add(reservation);
+		incrementReservation();
+		testResList.add(reservation);
+		incrementReservation();
+		testResList.add(reservation);
+		incrementReservation();
+		testResList.add(reservation);
+		incrementReservation();
+		testResList.add(reservation);
+		incrementReservation();
+		testResList.add(reservation);
+		incrementReservation();
+		testResList.add(reservation);
+		incrementReservation();
+		testResList.add(reservation);
+		incrementReservation();
+		testResList.add(reservation);
+		
 	}
 	
 	@Test
@@ -105,25 +127,6 @@ public class TestMakeReservationTimeSlot {
 
 
 	}
-
-
-	@Test
-	public void addReservationToRepository() {
-
-		incrementReservation();
-
-		//	first affirm that the reservation does not exist in the repo
-		//		assertFalse( testResList.contains( reservation ) );
-
-		//	add the reservation to the repo
-		reserveServe.addReservation( reservation );
-
-		//recreate Reservation List and confirm it is now listed
-		repopulateTestList();
-		
-		assertTrue( testResList.contains( reservation ) );
-	}
-
 
 
 	@Test
