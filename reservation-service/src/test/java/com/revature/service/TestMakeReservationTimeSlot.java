@@ -1,20 +1,19 @@
 package com.revature.service;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import static org.junit.Assert.*;
 import java.util.ArrayList;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.util.Assert;
 import org.springframework.test.context.junit4.SpringRunner;
 import com.revature.model.Reservation;
 import com.revature.model.RoomType;
 
 
 @SpringBootTest
+@RunWith(SpringRunner.class)
 public class TestMakeReservationTimeSlot {
 
 
@@ -34,28 +33,22 @@ public class TestMakeReservationTimeSlot {
 
 	//	instantiate the reservation object with hard-coded values for now
 	@Before
-	void createNewTestReservation() {
+	public void createNewTestReservationVariables() {
 		
 		//	hard coded reservation for now
 		reservation = new Reservation(1010010, 13, 7, 007, 1402, RoomType.PHYSICAL,
 				"BobTheBuilder", "11-22-1999 11:30", "11-22-1999 13:30" );
-	}
-
-	//	instantiate the list of reservations from the Reservation Service
-	@BeforeClass
-	void createResList() {
-		
-		//	populate the list with the controller
 		repopulateTestList();
 	}
 
-	private void incrementReservation() {
+
+	public void incrementReservation() {
 //		modify reservation slightly to avoid duplicate
 			reservation.setReservationId( reservation.getReservationId() + 1 );
 			reservation.setRoomId( reservation.getRoomId() + 1 );
 	}
 	
-	private void repopulateTestList() {
+	public void repopulateTestList() {
 		testResList = (ArrayList<Reservation>) reserveServe.getAllReservations();
 	}
 	
@@ -118,7 +111,7 @@ public class TestMakeReservationTimeSlot {
 
 
 	@Test
-	void reservationIsNotListed() {
+	public void reservationIsNotListed() {
 
 		if( testResList.contains( reservation ) ) {
 			incrementReservation();
@@ -130,7 +123,7 @@ public class TestMakeReservationTimeSlot {
 
 
 	@Test
-	void makeReservation() {
+	public void makeReservation() {
 		
 		//	modify reservation slightly to avoid duplicate
 		incrementReservation();
@@ -155,7 +148,7 @@ public class TestMakeReservationTimeSlot {
 	}
 
 	@Test
-	void cancelReservation() {
+	public void cancelReservation() {
 
 		if( !testResList.contains( reservation ) ) {
 			reserveServe.addReservation( reservation );
