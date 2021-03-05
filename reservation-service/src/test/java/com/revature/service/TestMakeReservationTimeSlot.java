@@ -36,94 +36,88 @@ public class TestMakeReservationTimeSlot {
 	@InjectMocks
 	@Autowired
 	private ReservationServiceImpl reserveServe; 
-	
+
 	//needed for testing
 	@MockBean
 	private RestTemplate restTemplate;
-	
+
 	@MockBean
-    private ReservationRepository repository;
+	private ReservationRepository repository;
 
 	//	instantiate the reservation object with hard-coded values for now
 	@Before
 	public void createTestReservationVariables() {
-		
+
 		//	hard coded reservation for now
-		reservation = new Reservation(1010010, 13, 7, 007, 1402, RoomType.PHYSICAL,
-				"BobTheBuilder", "11-22-1999 11:30", "11-22-1999 13:30" );
+		repopulateTestList();
 		//set the mocked restTemplate for testing
 		reserveServe.setRestTemplate(restTemplate);
-		repopulateTestList();
+
 	}
 
 
-	public void incrementReservation() {
-//		modify reservation slightly to avoid duplicate
-			reservation.setReservationId( reservation.getReservationId() + 1 );
-			reservation.setRoomId( reservation.getRoomId() + 1 );
-	}
-	
+
+
 	public void repopulateTestList() {
-		
+
 		testResList = new ArrayList<Reservation>();
-		reservation = new Reservation(1010011, 13, 7, 007, 1402, RoomType.PHYSICAL,
-				"BobTheBuilder", "11-22-1999 14:30", "11-22-1999 15:30" );
-		testResList.add(reservation);
-		incrementReservation();
-		testResList.add(reservation);
-		incrementReservation();
-		testResList.add(reservation);
-		incrementReservation();
-		testResList.add(reservation);
-		incrementReservation();
-		testResList.add(reservation);
-		incrementReservation();
-		testResList.add(reservation);
-		incrementReservation();
-		testResList.add(reservation);
-		incrementReservation();
-		testResList.add(reservation);
-		incrementReservation();
-		testResList.add(reservation);
-		incrementReservation();
-		testResList.add(reservation);
-		
+
+		//add 100 randomly generated reservations to the list
+		for (int i = 0; i>100; ++i) {
+			testResList.add( randomReservation() );
+
+		}
+		//make reservation a random reservation
+		reservation = randomReservation();
+
 	}
-	
+
+	public Reservation randomReservation() {
+		return new Reservation( ( (int)Math.random() * 5000000 ), 
+				( (int)Math.random() * 100 ) ,( (int)Math.random() * 100 ),
+				( (int)Math.random() * 100 ), ( (int)Math.random() * 1000000 ),
+				RoomType.PHYSICAL, "BobTheBuilder", "11-22-2018 14:30", "11-22-2018 15:30" );
+	}
+
 	@Test
 	public void reservationIsListed() {
-		if( !testResList.contains( reservation ) ) {
-			reserveServe.addReservation( reservation );
+		Reservation temp = randomReservation();
+
+		if( !testResList.contains( temp ) ) {
+			reserveServe.addReservation( temp );
 		}
 		//	check to see if reservation is present in the repo  
-		assertTrue(reserveServe.getAllReservations().contains(reservation));
+		assertTrue(reserveServe.getAllReservations().contains( temp ) );
 
 	}
 
 	@Test
 	public void isInvalidReservation() {
-
+		Reservation temp = randomReservation();
 		//	make a duplicate reservation and assert that it is already in the list
-		if ( !testResList.contains( reservation ) ) {
-			reserveServe.addReservation( reservation );
+		if ( !testResList.contains( temp ) ) {
+			reserveServe.addReservation( temp );
 		}
-		
-		assertFalse( reserveServe.isValidReservation( reservation ) ) ;
-		
+
+		assertFalse( reserveServe.isValidReservation( temp ) ) ;
+
 	}
 
 	@Test
 	public void isValidReservation() {
-		//depending on when this test is run, some adjust may need to happen
-		if( testResList.contains( reservation ) ) {
-			incrementReservation();
-			repopulateTestList();
-		}
 		
+		Reservation temp = randomReservation();
+		
+		//depending on when this test is run, some adjust may need to happen
+		if( testResList.contains( temp ) ) {
+			//start the test over until the list doesn't have temp
+			isValidReservation();
+		}
+
 		//if the reservation is already in the list of reservations 
-		//reserveControl.isValidReservation( roomId, startDate, endDat ) should return false
+		//reserveServe.isValidReservation( Reservation r ) should return false
 		//as the reservation already exists, the reservation is invalid
-		assertTrue( reserveServe.isValidReservation( reservation ) );
+		assertTrue( reserveServe.isValidReservation( temp ) );
 
 
 	}
@@ -131,35 +125,35 @@ public class TestMakeReservationTimeSlot {
 
 	@Test
 	public void reservationIsNotListed() {
-
-		if( testResList.contains( reservation ) ) {
-			incrementReservation();
+		Reservation temp = randomReservation();
+		if( testResList.contains( temp ) ) {
+			temp = randomReservation();
 		}
 		//	make sure it is a bad match
-		assertFalse( !testResList.contains( reservation ) );
+		assertFalse( testResList.contains( temp ) );
 
 	}
 
 
 	@Test
 	public void makeReservation() {
-		
-		//	modify reservation slightly to avoid duplicate
-		incrementReservation();
-		
+
+		//	partially random reservation to avoid duplicate
+		Reservation temp = randomReservation();
+
 
 		//	are the dates valid?
-		if( reserveServe.isValidReservation( reservation ) ) {
+		if( reserveServe.isValidReservation( temp ) ) {
 
 			//	add the reservation
-			reserveServe.addReservation(	reservation	);
+			reserveServe.addReservation(	temp	);
 
 			//	repopulate list with current list from  database
 			//repopulateTestList();
 
 
 			//	is the reservation in the most recent list?
-			assertTrue( testResList.contains( reservation ) );
+			assertTrue( testResList.contains( temp ) );
 
 		} else {
 			fail( "unable too make Reservation ");
@@ -168,18 +162,18 @@ public class TestMakeReservationTimeSlot {
 
 	@Test
 	public void cancelReservation() {
-
-		if( !testResList.contains( reservation ) ) {
-			reserveServe.addReservation( reservation );
+		Reservation temp = randomReservation();
+		if( !testResList.contains( temp ) ) {
+			reserveServe.addReservation( temp );
 			//repopulateTestList();
 		}
-		
+
 		//	remove reservation
-		reserveServe.deleteReservation( reservation.getReservationId() );
+		reserveServe.deleteReservation( temp.getReservationId() );
 		// repopulateTestList();
 
 		//	check to see if removal of reservation was successful
-		assertFalse( testResList.contains( reservation ) );
+		assertFalse( testResList.contains( temp ) );
 
 	}
 
