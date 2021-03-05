@@ -142,6 +142,13 @@ public class ReservationServiceImpl implements ReservationService {
 					reservation.getEndDate().after( res.getEndDate() ) ) {
 				return false;
 			}
+			// or if the proposed start date and end date match 
+			if( reservation.getStartDate().equals( res.getStartDate() ) ||
+					reservation.getEndDate().equals( res.getEndDate() ) ) {
+				
+				//fail schedule conflicts
+				return false;
+			}
 		}
 		
 		return true;

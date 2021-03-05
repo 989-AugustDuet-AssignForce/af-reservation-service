@@ -136,7 +136,7 @@ public class TestMakeReservationTimeSlot {
 			incrementReservation();
 		}
 		//	make sure it is a bad match
-		assertFalse( testResList.contains( reservation ) );
+		assertFalse( !testResList.contains( reservation ) );
 
 	}
 
@@ -155,7 +155,7 @@ public class TestMakeReservationTimeSlot {
 			reserveServe.addReservation(	reservation	);
 
 			//	repopulate list with current list from  database
-			repopulateTestList();
+			//repopulateTestList();
 
 
 			//	is the reservation in the most recent list?
@@ -171,15 +171,15 @@ public class TestMakeReservationTimeSlot {
 
 		if( !testResList.contains( reservation ) ) {
 			reserveServe.addReservation( reservation );
-			repopulateTestList();
+			//repopulateTestList();
 		}
 		
 		//	remove reservation
 		reserveServe.deleteReservation( reservation.getReservationId() );
-		repopulateTestList();
+		// repopulateTestList();
 
 		//	check to see if removal of reservation was successful
-		assertTrue( !testResList.contains( reservation ) );
+		assertFalse( testResList.contains( reservation ) );
 
 	}
 
