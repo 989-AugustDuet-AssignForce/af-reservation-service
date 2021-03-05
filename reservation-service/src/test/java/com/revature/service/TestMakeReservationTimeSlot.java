@@ -27,31 +27,32 @@ public class TestMakeReservationTimeSlot {
 	// needed to test the functionality of making a reservation and adding it to the repository
 	@Autowired
 	@MockBean
-	ArrayList<Reservation> testResList; 
+	private ArrayList<Reservation> testResList; 
 
 	//	need a reservation object
 	@Autowired
-	Reservation reservation;
+	private Reservation reservation;
 
-	//	autowired service for testing
+	//	autowired and injected service for testing
 	@InjectMocks
 	@Autowired
-	ReservationServiceImpl reserveServe; 
+	private ReservationServiceImpl reserveServe; 
 	
 	//needed for testing
 	@MockBean
 	private RestTemplate restTemplate;
+	
 	@MockBean
     private ReservationRepository repository;
 
 	//	instantiate the reservation object with hard-coded values for now
 	@Before
-	public void createNewTestReservationVariables() {
+	public void createTestReservationVariables() {
 		
 		//	hard coded reservation for now
 		reservation = new Reservation(1010010, 13, 7, 007, 1402, RoomType.PHYSICAL,
 				"BobTheBuilder", "11-22-1999 11:30", "11-22-1999 13:30" );
-		
+		//set the mocked restTemplate for testing
 		reserveServe.setRestTemplate(restTemplate);
 		repopulateTestList();
 	}
