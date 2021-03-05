@@ -3,14 +3,13 @@ package com.revature.service;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
-
+import org.junit.Test;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.Assert;
-
+import org.springframework.test.context.junit4.SpringRunner;
 import com.revature.model.Reservation;
 import com.revature.model.RoomType;
 
