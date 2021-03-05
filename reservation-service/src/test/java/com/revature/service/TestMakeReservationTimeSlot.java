@@ -4,12 +4,17 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.client.RestTemplate;
+
 import com.revature.model.Reservation;
 import com.revature.model.RoomType;
+import com.revature.repository.ReservationRepository;
 
 
 @SpringBootTest
@@ -21,6 +26,7 @@ public class TestMakeReservationTimeSlot {
 	// list of reservations from the repo, via the controller
 	// needed to test the functionality of making a reservation and adding it to the repository
 	@Autowired
+	@MockBean
 	ArrayList<Reservation> testResList; 
 
 	//	need a reservation object
@@ -28,8 +34,15 @@ public class TestMakeReservationTimeSlot {
 	Reservation reservation;
 
 	//	autowired service for testing
+	@InjectMocks
 	@Autowired
-	ReservationService reserveServe; 
+	ReservationServiceImpl reserveServe; 
+	
+	//needed for testing
+	@MockBean
+	private RestTemplate restTemplate;
+	@MockBean
+    private ReservationRepository repository;
 
 	//	instantiate the reservation object with hard-coded values for now
 	@Before
@@ -38,6 +51,8 @@ public class TestMakeReservationTimeSlot {
 		//	hard coded reservation for now
 		reservation = new Reservation(1010010, 13, 7, 007, 1402, RoomType.PHYSICAL,
 				"BobTheBuilder", "11-22-1999 11:30", "11-22-1999 13:30" );
+		
+		reserveServe.setRestTemplate(restTemplate);
 		repopulateTestList();
 	}
 
