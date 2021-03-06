@@ -2,9 +2,14 @@ package com.revature.service;
 
 import static org.junit.Assert.*;
 import java.util.ArrayList;
+import java.util.Optional;
+import java.util.Random;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
+import org.mockito.Mockito;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -73,32 +78,53 @@ public class TestMakeReservationTimeSlot {
 	}
 
 	public Reservation randomReservation() {
-		return new Reservation( ( (int)Math.random() * 5000000 ), 
-				( (int)Math.random() * 100 ) ,( (int)Math.random() * 100 ),
-				( (int)Math.random() * 100 ), ( (int)Math.random() * 1000000 ),
-				RoomType.PHYSICAL, "BobTheBuilder", "11-22-2018 14:30", "11-22-2018 15:30" );
+		 Random random = new Random();
+		return new Reservation( random.nextInt(500000), random.nextInt(10), 
+				random.nextInt(4), random.nextInt( 10 ), 
+				random.nextInt( 30 ), RoomType.PHYSICAL, "BobTheBuilder", 
+				"11-22-2018 14:30", "11-22-2018 15:30" );
 	}
 
 	@Test
 	public void reservationIsListed() {
+		
 		Reservation temp = randomReservation();
-
+		
+		
+		ArgumentCaptor<Reservation> savedReservation = ArgumentCaptor.forClass( Reservation.class );
+		
+		Mockito.when( repository.save( savedReservation.capture() )).thenReturn(temp);
+		
+		//add the temp reservation to the mocked
 		if( !testResList.contains( temp ) ) {
-			reserveServe.addReservation( temp );
+			testResList.add( reserveServe.addReservation( temp ) );
 		}
+		
+		Mockito.when( repository.findAll( ))
+		.thenReturn( testResList );
 		//	check to see if reservation is present in the repo  
 		assertTrue(reserveServe.getAllReservations().contains( temp ) );
+		
+		
 
 	}
 
 	@Test
 	public void isInvalidReservation() {
+		
 		Reservation temp = randomReservation();
+		ArgumentCaptor<Reservation> savedReservation = ArgumentCaptor.forClass( Reservation.class );
+
+		Mockito.when( repository.save( savedReservation.capture() )).thenReturn(temp);
+
+		
 		//	make a duplicate reservation and assert that it is already in the list
 		if ( !testResList.contains( temp ) ) {
-			reserveServe.addReservation( temp );
+			testResList.add( reserveServe.addReservation( temp ) );
 		}
-
+		
+		Mockito.when( repository.findAllReservationsByRoomId( temp.getRoomId() ) );
+		
 		assertFalse( reserveServe.isValidReservation( temp ) ) ;
 
 	}
