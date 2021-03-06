@@ -68,6 +68,8 @@ public class TestMakeReservationTimeSlot {
 		testResList = new ArrayList<Reservation>();
 
 		//add 100 randomly generated reservations to the list
+		//added constraints so that after 100 iterations, there should be
+		//a couple of duplicates for validation testing
 		for (int i = 0; i>100; ++i) {
 			testResList.add( randomReservation() );
 
@@ -79,7 +81,10 @@ public class TestMakeReservationTimeSlot {
 
 	public Reservation randomReservation() {
 		 Random random = new Random();
-		return new Reservation( random.nextInt(500000), random.nextInt(10), 
+		 //create a reservation with a random int in the following inclusive ranges
+		 //resId 0-500000, BldgID 0-4, LocID 0-10, RmID 0-30 
+		 //batchId set to null as theses are not assumed to be batch reservations
+		return new Reservation( random.nextInt(500000), null, 
 				random.nextInt(4), random.nextInt( 10 ), 
 				random.nextInt( 30 ), RoomType.PHYSICAL, "BobTheBuilder", 
 				"11-22-2018 14:30", "11-22-2018 15:30" );
@@ -123,7 +128,7 @@ public class TestMakeReservationTimeSlot {
 			testResList.add( reserveServe.addReservation( temp ) );
 		}
 		
-		Mockito.when( repository.findAllReservationsByRoomId( temp.getRoomId() ) );
+//		Mockito.when( repository.findAllReservationsByRoomId( temp.getRoomId() ) ).thenAnswer(tes));
 		
 		assertFalse( reserveServe.isValidReservation( temp ) ) ;
 
