@@ -1,7 +1,11 @@
 package com.revature.service;
 
 import static org.junit.Assert.*;
+
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -84,6 +88,8 @@ public class TestMakeReservationTimeSlot {
 		 //create a reservation with a random int in the following inclusive ranges
 		 //resId 0-500000, BldgID 0-4, LocID 0-10, RmID 0-30 
 		 //batchId set to null as theses are not assumed to be batch reservations
+		 
+	
 		return new Reservation( random.nextInt(500000), null, 
 				random.nextInt(4), random.nextInt( 10 ), 
 				random.nextInt( 30 ), RoomType.PHYSICAL, "BobTheBuilder", 
@@ -127,8 +133,18 @@ public class TestMakeReservationTimeSlot {
 		if ( !testResList.contains( temp ) ) {
 			testResList.add( reserveServe.addReservation( temp ) );
 		}
+	List<Reservation> mockedResult = new ArrayList<Reservation>();
 		
-//		Mockito.when( repository.findAllReservationsByRoomId( temp.getRoomId() ) ).thenAnswer(tes));
+	testResList.stream().filter( rest -> rest.getRoomId().equals(temp.getRoomId())).forEach( r -> mockedResult.add(r));
+			
+//		for(Reservation r : testResList) {
+//			if ( r.getRoomId() == temp.getRoomId() ) {
+//				mockedResult.add( r );
+//			}
+//		}
+//		
+		Mockito.when( repository.findAllReservationsByRoomId( temp.getRoomId() )) .thenReturn( mockedResult );
+		 
 		
 		assertFalse( reserveServe.isValidReservation( temp ) ) ;
 
