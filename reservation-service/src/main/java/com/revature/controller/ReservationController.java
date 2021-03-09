@@ -8,7 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestClientException;
+
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Api("Reservations Controller")
 @RestController
@@ -59,9 +62,29 @@ public class ReservationController {
     }
 
     @PutMapping(path="/{reservationId}/{batchId}")
-    public ResponseEntity<Void> assignBatch(@PathVariable Integer reservationId, @PathVariable Integer batchId){
-        reservationService.assignBatch(reservationId, batchId);
-        return new ResponseEntity<Void>(HttpStatus.CREATED);
+    public ResponseEntity<String> assignBatch( @PathVariable Integer reservationId, 
+    											@PathVariable Integer batchId ) {
+    	
+    	try {
+    		reservationService.assignBatch(reservationId, batchId);
+    		
+    	} catch( NoSuchElementException noSuchElementException ) {
+    		return new ResponseEntity<String>( noSuchElementException.getMessage(),
+    											HttpStatus.BAD_REQUEST );
+    		
+    	} catch( IllegalStateException illegalStateException ) {
+    		return new ResponseEntity<String>( illegalStateException.getMessage(),
+														HttpStatus.BAD_REQUEST );
+    		
+    	} catch( RestClientException restClientException ) {
+    		
+    		return new ResponseEntity<String>(  "Batch id: " + batchId +
+    												" not found, Caliber response: " +
+    												restClientException.getMessage(),
+													HttpStatus.NOT_FOUND );
+    	}
+    	
+        return new ResponseEntity<String>( "Batch assigned successfully", HttpStatus.CREATED );
     }
 
     @GetMapping(path = "/trainingstations", produces = MediaType.APPLICATION_JSON_VALUE)

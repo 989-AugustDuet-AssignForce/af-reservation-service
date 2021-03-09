@@ -4,10 +4,14 @@ import com.revature.model.Reservation;
 import com.revature.model.Room;
 import com.revature.repository.ReservationRepository;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -27,6 +31,7 @@ public class ReservationServiceImpl implements ReservationService {
     
     private RestTemplate restTemplate;
     
+    @Autowired
     public ReservationServiceImpl( ReservationRepository repository ) {
         this.repository = repository;
     }
@@ -34,7 +39,8 @@ public class ReservationServiceImpl implements ReservationService {
     public RestTemplate getRestTemplate() {
 		return restTemplate;
 	}
-
+    
+    @Autowired
 	public void setRestTemplate( RestTemplate restTemplate ) {
 		this.restTemplate = restTemplate;
 	}
@@ -66,18 +72,17 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public void assignBatch( Integer reservationId, Integer batchId ) throws NoSuchElementException, 
-    																	IllegalArgumentException {
+    public void assignBatch( Integer reservationId, Integer batchId ) throws NoSuchElementException,
+    																	IllegalStateException,
+    																	RestClientException {
     	
     	Reservation reservation = repository.findById( reservationId ).get();
     	
     	if( reservation.getBatchId() != null ) {
-    		// throw exception
-    		return;
+    		throw new IllegalStateException( "Batch is already assigned to Reservation" );
     	}
     	
-    	// Can throw IllegalArgumentException / 500 http Status code
-    	// but pass the exception to the calling method
+    	// Throws RestClientException if cannot convert to the object
 		BatchDTO batchDto = restTemplate.getForObject(caliberUrl + 
 									    				"batch/" + 
 									    				batchId, 
@@ -86,11 +91,17 @@ public class ReservationServiceImpl implements ReservationService {
 		batchDto.formatDate();
 		
     	// Validate dates
+		if( !datesAreEqualWithoutTime( reservation.getStartDate(), batchDto.startTime )) {
+			throw new IllegalStateException("Batch and Reservation start dates do not match");
+		}
+		
+		if( !datesAreEqualWithoutTime( reservation.getEndDate(), batchDto.endTime )) {
+			throw new IllegalStateException("Batchand Reservation end dates do not match");
+		}
 		
     	reservation.setBatchId(batchId);
     	repository.save(reservation);
     }
-
 
 	@Override
 	public List<Reservation> getAllReservationsByRoomId(Integer roomId) {
@@ -163,6 +174,13 @@ public class ReservationServiceImpl implements ReservationService {
 		return true;
 	}
 
-
+	private boolean  datesAreEqualWithoutTime(Date firstDate, Date secondDate) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		String tempDateOne = dateFormat.format(firstDate);
+		String tempDateTwo = dateFormat.format(secondDate);
+		
+		
+		return tempDateOne.equals(tempDateTwo);
+	}
 
 }
