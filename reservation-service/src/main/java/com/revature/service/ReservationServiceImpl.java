@@ -137,12 +137,20 @@ public class ReservationServiceImpl implements ReservationService {
 					reservation.getEndDate().before(res.getEndDate() )  ) {
 				return false;
 			}
+			
+			// or the proposed reservation wraps a prior reservation 
+			if( reservation.getStartDate().before(res.getStartDate() )   && 
+					reservation.getEndDate().after(res.getEndDate() )  ) {
+				return false;
+			}
+			
 			// or if the proposed start date is before a listed end date and the proposed end date 
 			// is after a listed end date
 			if( reservation.getStartDate().before(res.getEndDate()) &&
 					reservation.getEndDate().after( res.getEndDate() ) ) {
 				return false;
 			}
+			
 			// or if the proposed start date and end date match 
 			if( reservation.getStartDate().equals( res.getStartDate() ) ||
 					reservation.getEndDate().equals( res.getEndDate() ) ) {
