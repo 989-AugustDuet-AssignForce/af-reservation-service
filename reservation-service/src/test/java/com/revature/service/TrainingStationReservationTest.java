@@ -1,6 +1,7 @@
 package com.revature.service;
 
 import com.revature.model.Reservation;
+import com.revature.util.RoomOccupation;
 import com.revature.util.RoomType;
 import com.revature.repository.ReservationRepository;
 import org.junit.Assert;
@@ -46,13 +47,14 @@ public class TrainingStationReservationTest {
 
         reservationService = new ReservationServiceImpl(repository);
         reservation1.setReservationId(1);
-        reservation1.setRoomType(VIRTUAL);
+        reservation1.setRoomOccupation(RoomOccupation.TRAINING);
         reservation1.setReserver("Revature CEO");
         reservation1.setBuildingId(101);
         reservation1.setRoomId(101);
 
         reservation2.setReservationId(112);
-        reservation2.setRoomType(VIRTUAL);
+        reservation2.setRoomOccupation(RoomOccupation.TRAINING);
+
         reservation2.setReserver("Revature CEO");
         reservation2.setBuildingId(101);
         reservation2.setRoomId(201);

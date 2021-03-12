@@ -71,12 +71,10 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public Reservation updateReservation( Reservation reservation ) {
-		List<Reservation> reservations = repository.findAllReservationsByRoomId(
-				reservation.getRoomId() );
+		List<Reservation> reservations = repository.findAllReservationsByRoomId(reservation.getRoomId());
 		Reservation temp = getReservationById(reservation.getReservationId());
 		reservations.remove(temp);
 		for(Reservation res : reservations) {
-
 			if(  reservation.getStartDate().before( res.getStartDate() ) &&
 					reservation.getEndDate().after( res.getStartDate() ) ) {
 				addReservation(res);
