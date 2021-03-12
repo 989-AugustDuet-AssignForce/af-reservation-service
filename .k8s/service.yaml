@@ -9,5 +9,6 @@ spec:
     - port: 10000
       targetPort: res-http
       protocol: TCP
+      name: res-svc-http
   selector:
     service: reservation
