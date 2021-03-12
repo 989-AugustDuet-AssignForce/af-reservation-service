@@ -58,7 +58,7 @@ public class ReservationControllerTest {
         trainingStations.add(reservation2);
         doReturn(trainingStations).when(reservationService).getTrainingStationReservations();
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/reservations/trainingstations")
+        mockMvc.perform(MockMvcRequestBuilders.get("/reservation/api/trainingstations")
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(jsonPath("$", hasSize(2))).andDo(print());
     }
@@ -81,7 +81,7 @@ public class ReservationControllerTest {
 
         Mockito.when(reservationService.getAllReservationsByRoomId(1)).thenReturn(reservationList);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/reservations/rooms/1")
+        mockMvc.perform(MockMvcRequestBuilders.get("/reservation/api/rooms/1")
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(3))).andDo(print());
