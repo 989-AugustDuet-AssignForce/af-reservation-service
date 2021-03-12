@@ -16,7 +16,7 @@ import java.util.NoSuchElementException;
 
 @Api("Reservations Controller")
 @RestController
-@RequestMapping(path="/api/reservations")
+@RequestMapping(path="reservation/api/")
 public class ReservationController {
 
     private final ReservationService reservationService;
@@ -27,41 +27,48 @@ public class ReservationController {
 
     @GetMapping(path="/{reservationId}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Reservation> getReservationById(@PathVariable Integer reservationId){
+    	
          Reservation reservationById = reservationService.getReservationById(reservationId);
          return new ResponseEntity<Reservation>(reservationById,HttpStatus.OK);
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Reservation>> getAllReservations(){
+    	
         reservationService.getAllReservations();
         return new ResponseEntity<List<Reservation>>(reservationService.getAllReservations(),HttpStatus.OK);
     }
 
     @ApiOperation(value = "List of Reservations by Room Id", notes = "This controller returns a list of reservation objects")
     @GetMapping(path = "/rooms/{roomId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Reservation>> getAllReservationsByRoomId(@PathVariable Integer roomId){
+    public ResponseEntity<List<Reservation>> getAllReservationsByRoomId(@PathVariable Integer roomId) {
+    	
         List<Reservation> allReservations = reservationService.getAllReservationsByRoomId(roomId);
         return new ResponseEntity<>(allReservations,HttpStatus.OK);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Reservation> addReservation(@RequestBody Reservation reservation){
+    public ResponseEntity<Reservation> addReservation(@RequestBody Reservation reservation) {
+    	
         Reservation res = reservationService.addReservation(reservation);
         return new ResponseEntity<>(res, HttpStatus.CREATED);
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Reservation> updateReservation(@RequestBody Reservation reservation){
+    public ResponseEntity<Reservation> updateReservation(@RequestBody Reservation reservation) {
+    	
         Reservation res = reservationService.updateReservation(reservation);
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/{reservationId}")
-    public ResponseEntity<Void> deleteReservation(@PathVariable Integer reservationId){
+    public ResponseEntity<Void> deleteReservation(@PathVariable Integer reservationId) {
+    	
         reservationService.deleteReservation(reservationId);
         return  new ResponseEntity<Void>(HttpStatus.OK);
     }
-
+    
+    @ApiOperation(value="Add batch to reservation", notes="calls caliber service to match a batch to reservation")
     @PutMapping(path="/{reservationId}/{batchId}")
     public ResponseEntity<String> assignBatch( @PathVariable Integer reservationId, 
     											@PathVariable Integer batchId ) {
@@ -90,17 +97,24 @@ public class ReservationController {
     }
 
     @GetMapping(path = "/trainingstations", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Reservation>> getTrainingStationReservations(){
+    public ResponseEntity<List<Reservation>> getTrainingStationReservations() {
+    	
         return new ResponseEntity<List<Reservation>>(reservationService.getTrainingStationReservations(),HttpStatus.OK);
     }
 
     @GetMapping(path = "/trainingstations/building/{buildingId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Reservation>> getTrainingStationReservationsByBuildingId(@PathVariable Integer buildingId){
-        return new ResponseEntity<List<Reservation>>(reservationService.getTrainingStationReservationsByBuildingId(buildingId),HttpStatus.OK);
+    public ResponseEntity<List<Reservation>> getTrainingStationReservationsByBuildingId(@PathVariable Integer buildingId) {
+    	
+        return new ResponseEntity< List<Reservation> >(
+		        		reservationService.getTrainingStationReservationsByBuildingId(buildingId),
+		        		HttpStatus.OK);
     }
 
     @GetMapping(path="/{buildingId}/meetingrooms")
-    public ResponseEntity<List<RoomDTO>> getAllAvailableMeetingRooms(@PathVariable Integer buildingId, @RequestParam String startDate, @RequestParam String endDate){
+    public ResponseEntity<List<RoomDTO>> getAllAvailableMeetingRooms(@PathVariable Integer buildingId,
+    																@RequestParam String startDate,
+    																@RequestParam String endDate) {
+    	
         List<RoomDTO> availableMeetingRooms = reservationService.getAllAvailableMeetingRooms(buildingId, startDate, endDate);
         return new ResponseEntity<>(availableMeetingRooms,HttpStatus.OK);
 
