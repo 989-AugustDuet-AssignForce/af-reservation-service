@@ -32,6 +32,7 @@ import static com.revature.util.RoomType.VIRTUAL;
 import com.revature.dto.BatchDTO;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
 @Service
@@ -62,12 +63,25 @@ public class ReservationServiceImpl implements ReservationService {
 
 	@Override
     public Reservation addReservation( Reservation reservation ) {
-        return repository.save( reservation );
+        if (!isValidReservation(reservation)) {
+        	throw new EntityExistsException("Entered time-slot is not available for this reservation");
+		}
+    	return repository.save( reservation );
     }
 
     @Override
     public Reservation updateReservation( Reservation reservation ) {
-        return repository.save(reservation);
+		List<Reservation> reservations = repository.findAllReservationsByRoomId(reservation.getRoomId());
+		Reservation temp = getReservationById(reservation.getReservationId());
+		reservations.remove(temp);
+		for(Reservation res : reservations) {
+			if(  reservation.getStartDate().before( res.getStartDate() ) &&
+					reservation.getEndDate().after( res.getStartDate() ) ) {
+				addReservation(res);
+				throw new EntityExistsException("Entered time-slot is not available for this reservation");
+				}
+			}
+		return repository.save(reservation);
     }
 
     @Override
