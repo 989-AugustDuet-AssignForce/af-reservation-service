@@ -66,8 +66,11 @@ public class ReservationServiceImpl implements ReservationService {
         if (!isValidReservation(reservation)) {
         	throw new EntityExistsException("Entered time-slot is not available for this reservation");
 		}
-    	return repository.save( reservation );
-    }
+
+		Reservation savedReservation = repository.save(reservation);
+        repository.flush();
+        return savedReservation;
+	}
 
     @Override
     public Reservation updateReservation( Reservation reservation ) {
@@ -81,7 +84,9 @@ public class ReservationServiceImpl implements ReservationService {
 				throw new EntityExistsException("Entered time-slot is not available for this reservation");
 				}
 			}
-		return repository.save(reservation);
+		Reservation savedReservation = repository.save(reservation);
+		repository.flush();
+		return savedReservation;
     }
 
     @Override

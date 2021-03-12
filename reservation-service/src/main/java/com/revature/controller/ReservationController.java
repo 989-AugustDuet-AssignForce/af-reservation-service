@@ -16,7 +16,7 @@ import java.util.NoSuchElementException;
 
 @Api("Reservations Controller")
 @RestController
-@RequestMapping(path="reservation/api/")
+@RequestMapping(path="/api/")
 public class ReservationController {
 
     private final ReservationService reservationService;
@@ -51,6 +51,7 @@ public class ReservationController {
     public ResponseEntity<Reservation> addReservation(@RequestBody Reservation reservation) {
     	
         Reservation res = reservationService.addReservation(reservation);
+
         return new ResponseEntity<>(res, HttpStatus.CREATED);
     }
 

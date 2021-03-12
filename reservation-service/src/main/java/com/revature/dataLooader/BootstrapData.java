@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Component
-@Profile("dev")
+@Profile("prod")
 public class BootstrapData implements CommandLineRunner {
 
 
