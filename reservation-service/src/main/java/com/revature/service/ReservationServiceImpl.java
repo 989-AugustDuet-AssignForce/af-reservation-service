@@ -43,7 +43,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Value("${revature.caliberUrl}")
     private String caliberUrl;
 
-	@Value("{revature.locationServiceUrl}")
+	@Value("${revature.locationServiceUrl}")
 	private String locationServiceUrl;
     
     private RestTemplate restTemplate;
