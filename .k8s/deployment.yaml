@@ -18,6 +18,17 @@ spec:
         - name: af-reservation
           image: 855430746673.dkr.ecr.us-east-1.amazonaws.com/af-reservation-service:latest
           imagePullPolicy: Always
+          env:
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  key: username
+                  name: db-creds
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: db-creds
           ports:
             - containerPort: 8080
               name: res-http
