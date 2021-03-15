@@ -306,5 +306,71 @@ public class ReservationServiceImpl implements ReservationService {
 		
 		return tempDateOne.equals(tempDateTwo);
 	}
+    @Override
+    public List<RoomDTO> getAllAvailableTrainingStations(Integer buildingId, String startDate, 
+    		String endDate) {
+    	Map<String,Date> dates = new HashMap<>();
+    	ArrayList<RoomDTO> bookedStations = new ArrayList<RoomDTO>();
+    	List<Integer> bookedStationIds = new ArrayList<Integer>();
+    	
+    	try {
+    		SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy HH:mm");
+    		dates.put("startDate",formatter.parse(startDate));
+    		dates.put("endDate", formatter.parse(endDate));
+    	}catch (ParseException e) {
+    		e.printStackTrace();
+    	}
+
+    	UriComponentsBuilder uriBuilder =UriComponentsBuilder.fromUriString(locationServiceUrl
+    			).path(String.valueOf(buildingId));
+
+    	ResponseEntity<RoomDTO[]> responseEntity = restTemplate.getForEntity( 
+    			uriBuilder.toUriString(), RoomDTO[].class);
+
+
+    	List<RoomDTO> stations = Arrays.stream(responseEntity.getBody()).filter(roomDTO -> 
+    	roomDTO.getOccupation().equalsIgnoreCase("TRAINING")).collect(Collectors.toList());
+
+    	for (int i = 0; i < stations.size() ; ++i ) {
+
+    		List<Reservation> reservations = repository.findAllReservationsByRoomId(stations.get(i).getId())
+    				.stream()
+    				.collect(Collectors.toList());
+
+    		for (int j = 0; j < reservations.size(); j++) {
+
+    			if(dates.get("startDate").after(reservations.get(j).getStartDate()) &&
+    					dates.get("startDate").before(reservations.get(j).getEndDate())) {
+    				bookedStationIds.add(reservations.get(j).getRoomId());
+    			}
+    			if (dates.get("endDate").after(reservations.get(j).getStartDate()) &&
+    					dates.get("endDate").before(reservations.get(j).getEndDate())) {
+    				bookedStationIds.add(reservations.get(j).getRoomId());
+    			}
+    			if (dates.get("startDate").before(reservations.get(j).getStartDate()) &&
+    					dates.get("endDate").after(reservations.get(j).getEndDate())) {
+    				bookedStationIds.add(reservations.get(j).getRoomId());
+    			}
+    			if (dates.get("startDate").equals(reservations.get(j).getStartDate()) &&
+    					dates.get("endDate").equals(reservations.get(j).getEndDate())) {
+    				bookedStationIds.add(reservations.get(j).getRoomId());
+    			}
+
+    		}
+
+    	}
+
+    	for ( int i = 0; i < stations.size() ; ++i ) {
+    		for ( int j = 0; j < bookedStationIds.size() ; ++j ) {
+    			if( stations.get(i).getId() == bookedStationIds.get(j)){
+    				bookedStations.add(stations.get(i));
+    			}
+    		}
+    	}
+    	for(RoomDTO i : bookedStations) {
+    		stations.remove(i);
+    	}
+    	return stations;
+    }	
 
 }

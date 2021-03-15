@@ -121,5 +121,10 @@ public class ReservationController {
 
     }
 
+    @GetMapping(path="/{buildingId}/trainingstations")
+    public ResponseEntity<List<RoomDTO>> getAllAvailableTrainingStations(@PathVariable Integer buildingId, @RequestParam String startDate, @RequestParam String endDate){
+        List<RoomDTO> availableTrainingStations = reservationService.getAllAvailableTrainingStations(buildingId, startDate, endDate);
+        return new ResponseEntity<>(availableTrainingStations,HttpStatus.OK);
 
+    }
 }

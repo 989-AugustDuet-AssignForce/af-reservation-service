@@ -18,5 +18,6 @@ public interface ReservationService {
     List<RoomDTO> getAllAvailableMeetingRooms(Integer BuildingId, String startDate, String endDate);
     List<Reservation> getTrainingStationReservations();
     List<Reservation> getTrainingStationReservationsByBuildingId(Integer buildingId);
+	List<RoomDTO> getAllAvailableTrainingStations(Integer buildingId, String startDate, String endDate);
 
 }
