@@ -16,7 +16,7 @@ import java.util.NoSuchElementException;
 
 @Api("Reservations Controller")
 @RestController
-@RequestMapping(path="/api/")
+@RequestMapping(path="/api")
 public class ReservationController {
 
     private final ReservationService reservationService;
