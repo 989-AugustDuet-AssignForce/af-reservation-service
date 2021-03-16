@@ -182,7 +182,6 @@ public class ReservationServiceImpl implements ReservationService {
 			//populate list with all reservations with a matching room number
 			List<Reservation> reservations = repository.findAllReservationsByRoomId(rooms.get(i).getId())
 					.stream()
-					.filter(x -> x.getRoomType() == PHYSICAL)
 					.collect(Collectors.toList());
 
 			for (int j = 0; j < reservations.size(); j++) {
